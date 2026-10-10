@@ -44,6 +44,17 @@ test('prepareItems: 섞은 뒤에도 정답 유지, 입력 불변', () => {
   assertEqual(JSON.stringify(list), before);
 });
 
+// ===== 2단계: 점수 =====
+test('scoreAnswer: 2/1/0', () => {
+  assertEqual(QuizCore.scoreAnswer({ correct: true, usedHint: false }), 2);
+  assertEqual(QuizCore.scoreAnswer({ correct: true, usedHint: true }), 1);
+  assertEqual(QuizCore.scoreAnswer({ correct: false, usedHint: false }), 0);
+  assertEqual(QuizCore.scoreAnswer({ correct: false, usedHint: true }), 0);
+});
+test('formatScore', () => {
+  assertEqual([14, 15, 0, 1].map(QuizCore.formatScore), ['7', '7.5', '0', '0.5']);
+});
+
 // ===== 결과 표시 =====
 window.addEventListener('load', () => {
   const passed = results.filter(r => r.ok).length;

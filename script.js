@@ -28,4 +28,15 @@ const QuizCore = {
       };
     });
   },
+
+  // 반점 단위 점수: 정답 2, 힌트를 쓴 정답 1, 오답 0.
+  scoreAnswer({ correct, usedHint }) {
+    if (!correct) return 0;
+    return usedHint ? 1 : 2;
+  },
+
+  // 반점 정수를 화면용 문자열로 바꾼다(15 -> "7.5"). 단독 함수로 넘겨도 되도록 this를 쓰지 않는다.
+  formatScore(halfPoints) {
+    return String(halfPoints / 2);
+  },
 };

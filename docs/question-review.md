@@ -24,3 +24,13 @@
 | wg-08 | 빙하가 깎아 만든 골짜기에 바닷물이 들어와 생긴, 좁고 길며 깊은 만은? | 피오르 | 리아스 해안, 석호, 환초 | Encyclopaedia Britannica 「fjord」 | https://www.britannica.com/science/fjord | 빙식곡이 바다에 잠겨 생긴 좁고 긴 바다의 팔 |
 | wg-09 | 남아메리카 서해안 열대 태평양의 바닷물이 평소보다 유난히 따뜻해지는 현상은? | 엘니뇨 | 라니냐, 푄, 몬순 | Encyclopaedia Britannica 「El Niño」 | https://www.britannica.com/science/El-Nino | 남미 열대 서해안 바다가 유난히 따뜻해지는 현상 |
 | wg-10 | 대부분 경도 180°선을 따라 그어져 하루와 다음 날의 날짜를 나누는 가상의 선은? | 국제 날짜 변경선 | 본초 자오선, 적도, 북회귀선 | Encyclopaedia Britannica 「International Date Line」 | https://www.britannica.com/topic/International-Date-Line | 날짜를 구분하는 가상의 선, 대부분 180° 경선 |
+| sc-01 | 국제단위계(SI)에서 힘의 단위는? | 뉴턴(N) | 줄(J), 와트(W), 파스칼(Pa) | NIST SP 811 「Chapter 4 – The Two Classes of SI Units and the SI Prefixes」 | https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-4-two-classes-si-units-and-si-prefixes | 표 3: 힘 N, 압력 Pa, 에너지 J, 일률 W |
+| sc-02 | 힘이 작용하지 않으면 정지한 물체는 계속 정지하고 움직이는 물체는 등속 직선 운동을 한다는 뉴턴 운동 제1법칙의 다른 이름은? | 관성의 법칙 | 가속도의 법칙, 작용 반작용의 법칙, 만유인력의 법칙 | Encyclopaedia Britannica 「Newton’s laws of motion」 | https://www.britannica.com/science/Newtons-laws-of-motion | 제1법칙은 관성, 제2는 F=ma, 제3은 작용 반작용 |
+| sc-03 | 드라이아이스는 어떤 물질이 고체 상태로 된 것인가? | 이산화 탄소 | 질소, 일산화 탄소, 메테인 | Encyclopaedia Britannica 「Dry ice」 | https://www.britannica.com/technology/dry-ice | 고체 상태의 CO2, -78.5°C에서 승화 |
+| sc-04 | 건조한 공기에서 부피 기준으로 가장 큰 비율을 차지하는 기체는? | 질소 | 산소, 아르곤, 이산화 탄소 | NASA NSSDCA 「Earth Fact Sheet」 | https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html | 부피로 N2 78.08%, O2 20.95%, Ar·CO2는 ppm 단위 |
+| sc-05 | 세포에 필요한 화학 에너지 대부분을 만들어 ATP 형태로 저장하는 세포 소기관은? | 미토콘드리아 | 리보솜, 골지체, 리소좀 | NHGRI Talking Glossary 「Mitochondria」 | https://www.genome.gov/genetics-glossary/Mitochondria | 세포 화학 에너지 대부분을 만들어 ATP에 저장 |
+| sc-06 | DNA에는 없고 RNA에만 들어 있는 염기는? | 우라실 | 아데닌, 구아닌, 사이토신 | NHGRI Talking Glossary 「Uracil」 | https://www.genome.gov/genetics-glossary/Uracil | U는 RNA 염기, DNA에서는 T가 대신함 |
+| sc-07 | 1928년 페니실린을 발견해 항생제 시대를 연 스코틀랜드의 세균학자는? | 알렉산더 플레밍 | 루이 파스퇴르, 로베르트 코흐, 에드워드 제너 | Encyclopaedia Britannica 「Alexander Fleming」 | https://www.britannica.com/biography/Alexander-Fleming | 스코틀랜드 세균학자, 1928년 페니실린 발견 |
+| sc-08 | 지표면에서 시작하며 거의 모든 기상 현상이 일어나는 대기층은? | 대류권 | 성층권, 중간권, 열권 | NOAA 「Layers of the Atmosphere」 | https://www.noaa.gov/jetstream/atmosphere/layers-of-atmosphere | 지표에서 시작, 거의 모든 날씨가 일어남 |
+| sc-09 | 다음 중 화산 활동으로 생긴 화성암에 속하는 암석은? | 현무암 | 석회암, 사암, 대리암 | Encyclopaedia Britannica 「Basalt」 | https://www.britannica.com/science/basalt | 현무암은 분출 화성암(화산암) |
+| sc-10 | 지구에 계절이 생기는 주된 까닭은? | 자전축이 기울어진 채 태양 둘레를 돌아서 | 지구와 태양 사이의 거리가 달라져서, 지구가 하루에 한 바퀴씩 자전해서, 달이 지구 둘레를 공전해서 | NASA Space Place 「What Causes the Seasons?」 | https://spaceplace.nasa.gov/seasons/en/ | 기울어진 자전축이 계절의 원인, 거리는 아님 |

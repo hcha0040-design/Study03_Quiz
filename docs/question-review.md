@@ -34,3 +34,13 @@
 | sc-08 | 지표면에서 시작하며 거의 모든 기상 현상이 일어나는 대기층은? | 대류권 | 성층권, 중간권, 열권 | NOAA 「Layers of the Atmosphere」 | https://www.noaa.gov/jetstream/atmosphere/layers-of-atmosphere | 지표에서 시작, 거의 모든 날씨가 일어남 |
 | sc-09 | 다음 중 화산 활동으로 생긴 화성암에 속하는 암석은? | 현무암 | 석회암, 사암, 대리암 | Encyclopaedia Britannica 「Basalt」 | https://www.britannica.com/science/basalt | 현무암은 분출 화성암(화산암) |
 | sc-10 | 지구에 계절이 생기는 주된 까닭은? | 자전축이 기울어진 채 태양 둘레를 돌아서 | 지구와 태양 사이의 거리가 달라져서, 지구가 하루에 한 바퀴씩 자전해서, 달이 지구 둘레를 공전해서 | NASA Space Place 「What Causes the Seasons?」 | https://spaceplace.nasa.gov/seasons/en/ | 기울어진 자전축이 계절의 원인, 거리는 아님 |
+| ac-01 | 제주도 유배 중이던 김정희가 제자 이상적에게 답례로 그려 준 그림은? | 세한도 | 인왕제색도, 몽유도원도, 미인도 | 한국민족문화대백과사전 「김정희 필 세한도」 | https://encykorea.aks.ac.kr/Article/E0038956 | 1844년 제주 유배 중 제자 이상적에게 답례로 그림 |
+| ac-02 | 소리꾼 한 명이 고수의 북장단에 맞추어 소리와 아니리로 이야기를 엮고 발림을 곁들여 공연하는 전통 예술은? | 판소리 | 산조, 가곡, 농악 | 한국민족문화대백과사전 「판소리」 | https://encykorea.aks.ac.kr/Article/E0059663 | 창자 1명·고수 북장단, 소리·아니리·발림으로 구연 |
+| ac-03 | 1995년 석굴암과 함께 하나의 유네스코 세계유산으로 등재된 절은? | 불국사 | 해인사, 통도사, 부석사 | UNESCO World Heritage Centre 「Seokguram Grotto and Bulguksa Temple」 | https://whc.unesco.org/en/list/736 | 석굴암과 불국사가 한 유산, 1995년 등재 |
+| ac-04 | 1926년에 간행된 시집 『님의 침묵』을 쓴 시인은? | 한용운 | 김소월, 윤동주, 이육사 | 한국민족문화대백과사전 「님의 침묵」 | https://encykorea.aks.ac.kr/Article/E0013398 | 한용운의 시집, 1926년 회동서관 간행, 88편 |
+| ac-05 | 칸 영화제 황금종려상과 아카데미 작품상을 받은 2019년 한국 영화 「기생충」의 감독은? | 봉준호 | 박찬욱, 이창동, 홍상수 | Encyclopaedia Britannica 「Parasite」 | https://www.britannica.com/topic/Parasite-2019-film | 봉준호 감독 2019년 작, 황금종려상·작품상 |
+| ac-06 | 밀라노 산타 마리아 델레 그라치에 수도원 식당 벽에 「최후의 만찬」을 그린 화가는? | 레오나르도 다빈치 | 미켈란젤로, 라파엘로, 티치아노 | UNESCO World Heritage Centre 「Church and Dominican Convent of Santa Maria delle Grazie with “The Last Supper” by Leonardo da Vinci」 | https://whc.unesco.org/en/list/93 | 식당 북쪽 벽 「최후의 만찬」은 레오나르도 작 |
+| ac-07 | 1937년 스페인 내전 중 독일 공군에 폭격당한 바스크 지방의 도시를 주제로 그린 그림은? | 게르니카 | 아비뇽의 처녀들, 기억의 지속, 절규 | Encyclopaedia Britannica 「Guernica」 | https://www.britannica.com/topic/Guernica-by-Picasso | 1937년 독일군의 게르니카 폭격 뒤 피카소가 그림 |
+| ac-08 | 마지막 악장에서 합창과 독창자들이 실러의 시 「환희의 송가」를 부르는 교향곡 제9번의 작곡가는? | 베토벤 | 모차르트, 슈베르트, 브람스 | Encyclopaedia Britannica 「Symphony No. 9 in D Minor, Op. 125」 | https://www.britannica.com/topic/Symphony-No-9-in-D-Minor | 베토벤 9번 마지막 악장에 합창·「환희의 송가」 |
+| ac-09 | 기사 이야기에 빠져 스스로 편력 기사가 된 시골 귀족을 그린 소설 『돈키호테』의 작가는? | 미겔 데 세르반테스 | 윌리엄 셰익스피어, 몰리에르, 단테 알리기에리 | Encyclopaedia Britannica 「Don Quixote」 | https://www.britannica.com/topic/Don-Quixote-novel | 스페인 작가 세르반테스의 소설, 1605·1615년 |
+| ac-10 | 무굴 제국 황제 샤자한이 세상을 떠난 아내 뭄타즈 마할을 기리려고 세운 무덤 건축은? | 타지마할 | 후마윤 묘, 쿠트브 미나르, 아잔타 석굴 | UNESCO World Heritage Centre 「Taj Mahal」 | https://whc.unesco.org/en/list/252 | 샤자한이 아내 뭄타즈 마할을 기려 세움 |

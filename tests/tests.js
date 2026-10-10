@@ -109,6 +109,11 @@ test('validateQuestions: 메시지 형식과 입력 불변', () => {
   assertEqual(JSON.stringify(qs), before);
 });
 
+test('문항 데이터: 40문항이 작성 규칙을 지킨다', () => {
+  const errors = QuizCore.validateQuestions(QUESTIONS, CATEGORIES);
+  assert(errors.length === 0, errors.join(' / '));
+});
+
 // ===== 결과 표시 =====
 window.addEventListener('load', () => {
   const passed = results.filter(r => r.ok).length;

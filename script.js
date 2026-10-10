@@ -140,3 +140,58 @@ const QuizCore = {
     return errors;
   },
 };
+
+// ===================================================================
+// 화면 처리 (DOM 사용). #app이 있을 때만 시작한다.
+// ===================================================================
+
+const MODES = {
+  practice: { name: '연습', rule: '시간 제한과 힌트 없음, 맞히면 1점' },
+  speed: { name: '스피드', rule: '문항마다 15초, 시간이 지나면 오답' },
+  hint: { name: '힌트', rule: '문항마다 힌트 1번(오답 2개 제거), 힌트를 쓰고 맞히면 0.5점' },
+};
+
+let selectedMode = 'practice';
+let game = null;
+
+function el(id) {
+  return document.getElementById(id);
+}
+
+// name: 'mode' | 'start' | 'question' | 'result' | 'board'
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach((s) => {
+    s.hidden = s.id !== 'screen-' + name;
+  });
+  const screen = document.getElementById('screen-' + name);
+  if (!screen) return;
+  const title = screen.querySelector('[tabindex="-1"]');
+  if (title) title.focus();
+}
+
+function goHome() {
+  game = null;
+  renderStart();
+  showScreen('start');
+}
+
+function renderStart() {
+  el('start-rule').textContent = MODES[selectedMode].rule;
+  el('start-norecord').hidden = selectedMode !== 'practice';
+
+  const list = el('category-list');
+  list.textContent = '';
+  CATEGORIES.forEach((c) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.category = c.id;
+    btn.textContent = c.name;
+    list.appendChild(btn);
+  });
+}
+
+function init() {
+  goHome();
+}
+
+if (document.getElementById('app')) init();

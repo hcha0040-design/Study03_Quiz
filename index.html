@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상식 퀴즈</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+    <section class="screen" id="screen-start">
+      <h1 id="start-title" tabindex="-1">상식 퀴즈</h1>
+      <p id="start-rule"></p>
+      <p id="start-norecord" hidden>순위표에 기록되지 않음</p>
+      <div id="category-list"></div>
+    </section>
+
+    <section class="screen" id="screen-question" hidden>
+      <div class="status-bar">
+        <span id="q-category"></span>
+        <span id="q-progress"></span>
+        <span id="q-score"></span>
+        <button type="button" id="btn-quit">그만두기</button>
+      </div>
+      <h2 id="q-text" tabindex="-1"></h2>
+      <div id="choice-list"></div>
+      <div id="feedback" aria-live="polite">
+        <p id="feedback-verdict"></p>
+        <p id="feedback-explanation"></p>
+        <p id="feedback-source"></p>
+      </div>
+      <button type="button" id="btn-next" hidden>다음</button>
+    </section>
+
+    <section class="screen" id="screen-result" hidden>
+      <h2 id="result-title" tabindex="-1">결과</h2>
+      <p id="result-score"></p>
+      <p id="result-correct"></p>
+      <p id="result-hints" hidden></p>
+      <p id="result-norecord" hidden>순위표에 기록되지 않음</p>
+      <div class="actions">
+        <button type="button" id="btn-again">같은 카테고리 다시 하기</button>
+        <button type="button" id="btn-home">처음으로</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

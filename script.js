@@ -192,13 +192,32 @@ function showScreen(name) {
   if (title) title.focus();
 }
 
+// 처음 화면은 모드 선택 화면이다.
 function goHome() {
   game = null;
-  renderStart();
-  showScreen('start');
+  showScreen('mode');
+}
+
+function renderModes() {
+  const list = el('mode-list');
+  list.textContent = '';
+  Object.keys(MODES).forEach((mode) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.mode = mode;
+    const name = document.createElement('strong');
+    name.className = 'mode-name';
+    name.textContent = MODES[mode].name;
+    const rule = document.createElement('span');
+    rule.className = 'mode-rule';
+    rule.textContent = MODES[mode].rule;
+    btn.append(name, rule);
+    list.appendChild(btn);
+  });
 }
 
 function renderStart() {
+  el('start-title').textContent = `${MODES[selectedMode].name} 모드`;
   el('start-rule').textContent = MODES[selectedMode].rule;
   el('start-norecord').hidden = selectedMode !== 'practice';
 
@@ -341,6 +360,15 @@ function quitGame() {
 }
 
 function init() {
+  renderModes();
+  el('mode-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    selectedMode = btn.dataset.mode;
+    renderStart();
+    showScreen('start');
+  });
+  el('btn-back').addEventListener('click', goHome);
   el('category-list').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-category]');
     if (!btn) return;

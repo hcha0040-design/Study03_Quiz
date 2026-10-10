@@ -138,6 +138,10 @@ button:disabled {
   opacity: .4;
 }
 
+#btn-hint:disabled {
+  opacity: .5;
+}
+
 .is-urgent {
   color: #b91c1c;
   font-weight: 700;

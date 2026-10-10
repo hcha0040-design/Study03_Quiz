@@ -277,6 +277,8 @@ function renderQuestion() {
     list.appendChild(btn);
   });
 
+  el('btn-hint').hidden = game.mode !== 'hint';
+  el('btn-hint').disabled = false;
   el('feedback').hidden = true;
   el('btn-next').hidden = true;
   el('q-text').focus();
@@ -323,9 +325,29 @@ function tick() {
   }
 }
 
+// ---- 힌트 모드 ----
+
+// 오답 2개를 잠그고 흐리게 한다. 버튼 자리는 그대로 둔다.
+function useHint() {
+  if (!game || game.mode !== 'hint' || game.phase !== 'answering' || game.usedHint) return;
+  const item = game.items[game.index];
+  const removals = QuizCore.pickHintRemovals(item, Math.random);
+  const choices = el('choice-list').querySelectorAll('.choice');
+  removals.forEach((i) => {
+    choices[i].disabled = true;
+    choices[i].classList.add('is-removed');
+  });
+  game.usedHint = true;
+  el('btn-hint').disabled = true;
+  // 잠긴 [힌트]에 초점이 남지 않게 남은 첫 보기로 옮긴다.
+  const first = [...choices].find((b) => !b.disabled);
+  if (first) first.focus();
+}
+
 function finishQuestion({ chosenIndex, timedOut }) {
   if (game.phase !== 'answering') return;
   stopTimer();
+  el('btn-hint').disabled = true;
   const item = game.items[game.index];
   const correct = !timedOut && chosenIndex === item.answerIndex;
   const halfPoints = QuizCore.scoreAnswer({ correct, usedHint: game.usedHint });
@@ -393,7 +415,9 @@ function showResult() {
 
   el('result-score').textContent = `${QuizCore.formatScore(total)} / ${game.items.length}`;
   el('result-correct').textContent = `맞힌 문항: ${correctCount}개`;
-  el('result-hints').hidden = true; // 힌트 모드에서 채운다(2단계)
+  const hintCount = game.results.filter((r) => r.usedHint).length;
+  el('result-hints').textContent = `힌트를 쓴 문항: ${hintCount}개`;
+  el('result-hints').hidden = game.mode !== 'hint';
   el('result-norecord').hidden = game.mode !== 'practice';
 
   showScreen('result');
@@ -443,6 +467,7 @@ function init() {
   el('btn-next').addEventListener('click', () => {
     if (game) nextQuestion();
   });
+  el('btn-hint').addEventListener('click', useHint);
   el('btn-quit').addEventListener('click', quitGame);
   el('btn-again').addEventListener('click', () => {
     if (!game) return;

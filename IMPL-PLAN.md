@@ -356,7 +356,7 @@ test('문항 데이터: 40문항이 작성 규칙을 지킨다', () => {
 ## 만들 것
 
 - 2단계 `QuizCore`: `pickHintRemovals`, `wrongQuestionIds`, `remainingSeconds`, `isTimedOut`
-- 모드 선택 화면(연습·스피드·힌트와 한 줄 설명), 시작 화면의 모드별 규칙과 [뒤로]
+- 모드 선택 화면(카테고리를 고른 뒤에 나옴, 연습·스피드·힌트와 모드별 규칙 한 줄, 연습에만 "순위표에 기록되지 않음", [뒤로])
 - 스피드 모드: 문항마다 15초, `Date.now()` 기준 계산, 5초 이하 강조, 시간 초과는 오답, 타이머는 하나만
 - 힌트 모드: [힌트]로 오답 2개 흐리게, 힌트 쓰고 맞히면 0.5점, 결과에 힌트 쓴 문항 수
 - 연습 모드의 [틀린 문제 다시 풀기](다 맞힐 때까지 반복)
@@ -412,12 +412,12 @@ test('remainingSeconds / isTimedOut 경계값', () => {
 - Modify: `index.html`, `script.js`, `style.css`
 
 **Interfaces:**
-- Consumes: `MODES`, `selectedMode`, `renderStart`, `showScreen`
-- Produces: 마크업 `#screen-mode`(`#mode-title`, `[data-mode]` 버튼 3개와 설명), `#btn-back`(시작 화면), `goHome()`이 이제 모드 선택 화면으로 간다.
+- Consumes: `MODES`, `CATEGORIES`, `renderStart`, `showScreen`
+- Produces: `let selectedCategory`(1단계의 `selectedMode`를 대신함), `renderModes()`, 마크업 `#screen-mode`(`#mode-title`, `#mode-list`의 `[data-mode]` 버튼 3개와 규칙, `#btn-back`). 시작 화면에서 `#start-rule`, `#start-norecord`를 뺀다. `goHome()`은 계속 시작 화면으로 간다.
 
-- [ ] **Step 1: 마크업을 추가한다** — 모드 버튼마다 이름과 `MODES[mode].rule`을 한 줄 설명으로 둔다. 시작 화면에 [뒤로]를 둔다.
-- [ ] **Step 2: 동작을 구현한다** — 모드 버튼을 누르면 `selectedMode`를 바꾸고 `renderStart()` 후 시작 화면으로 간다. `#start-norecord`는 연습 모드일 때만 보인다. [뒤로]와 `goHome()`은 모드 선택 화면으로 간다. 카테고리 버튼은 `startGame({ mode: selectedMode, ... })`를 부른다.
-- [ ] **Step 3: 브라우저로 확인한다** — 첫 화면이 모드 선택이다. 각 모드를 고르면 그 모드 규칙이 시작 화면에 보이고, 연습일 때만 "순위표에 기록되지 않음"이 보인다. [뒤로]와 결과 화면의 [처음으로]는 모드 선택 화면으로 간다.
+- [ ] **Step 1: 마크업을 추가한다** — 모드 선택 화면을 시작 화면 뒤에 두고 [뒤로]를 둔다. 시작 화면의 규칙 줄과 "순위표에 기록되지 않음"을 뺀다.
+- [ ] **Step 2: 동작을 구현한다** — 카테고리 버튼을 누르면 `selectedCategory`를 바꾸고 `renderModes()` 후 모드 선택 화면으로 간다. `renderModes()`는 제목을 "(카테고리 이름) · 모드를 고르세요"로 하고, 모드 버튼마다 이름과 `MODES[mode].rule`을, 연습 버튼에만 "순위표에 기록되지 않음"을 붙인다. 모드 버튼은 `startGame({ mode, categoryId: selectedCategory, ... })`를 부른다. [뒤로]는 `goHome()`이다.
+- [ ] **Step 3: 브라우저로 확인한다** — 첫 화면이 시작 화면(카테고리 4개)이고 "순위표에 기록되지 않음"이 없다. 과학을 고르면 "과학 · 모드를 고르세요"와 모드 3개, 모드마다 규칙 한 줄이 보이고, "순위표에 기록되지 않음"은 연습 버튼에만 있다. [뒤로]와 결과 화면의 [처음으로]는 시작 화면으로 간다.
 - [ ] **Step 4: 커밋한다** — `git commit -am "feat: 모드 선택 화면"`
 
 ### Task 10: 스피드 모드 타이머
@@ -464,8 +464,9 @@ test('remainingSeconds / isTimedOut 경계값', () => {
 
 **공통**
 - [ ] `tests/test.html`이 `실패 0`이다.
-- [ ] 처음 화면이 모드 선택 화면이고, 모드 3개마다 한 줄 설명이 있다.
-- [ ] 각 모드를 고르면 시작 화면에 그 모드 규칙이 나오고, [뒤로]로 돌아갈 수 있다.
+- [ ] 처음 화면이 시작 화면(카테고리 선택)이고, "순위표에 기록되지 않음" 문구가 없다.
+- [ ] 카테고리를 고르면 "(카테고리) · 모드를 고르세요"가 나오고, 모드 3개마다 규칙 한 줄이 있으며, "순위표에 기록되지 않음"은 연습에만 있다.
+- [ ] [뒤로]를 누르면 시작 화면으로 돌아간다.
 
 **스피드**
 - [ ] 문제가 나오면 15부터 1초씩 줄고, 5 이하가 되면 강조된다.

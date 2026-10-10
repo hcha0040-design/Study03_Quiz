@@ -174,7 +174,7 @@ const MODES = {
   hint: { name: '힌트', rule: '문항마다 힌트 1번(오답 2개 제거), 힌트를 쓰고 맞히면 0.5점' },
 };
 
-let selectedMode = 'practice';
+let selectedCategory = null;
 let game = null;
 let timerId = null;
 
@@ -193,13 +193,17 @@ function showScreen(name) {
   if (title) title.focus();
 }
 
-// 처음 화면은 모드 선택 화면이다.
+// 처음 화면은 시작(카테고리 선택) 화면이다.
 function goHome() {
   game = null;
-  showScreen('mode');
+  showScreen('start');
 }
 
+// 고른 카테고리 이름을 제목에 넣고, 모드마다 규칙 한 줄을 붙인다.
 function renderModes() {
+  const category = CATEGORIES.find((c) => c.id === selectedCategory);
+  el('mode-title').textContent = `${category ? category.name : ''} · 모드를 고르세요`;
+
   const list = el('mode-list');
   list.textContent = '';
   Object.keys(MODES).forEach((mode) => {
@@ -213,15 +217,17 @@ function renderModes() {
     rule.className = 'mode-rule';
     rule.textContent = MODES[mode].rule;
     btn.append(name, rule);
+    if (mode === 'practice') {
+      const norecord = document.createElement('span');
+      norecord.className = 'mode-rule';
+      norecord.textContent = '순위표에 기록되지 않음';
+      btn.appendChild(norecord);
+    }
     list.appendChild(btn);
   });
 }
 
 function renderStart() {
-  el('start-title').textContent = `${MODES[selectedMode].name} 모드`;
-  el('start-rule').textContent = MODES[selectedMode].rule;
-  el('start-norecord').hidden = selectedMode !== 'practice';
-
   const list = el('category-list');
   list.textContent = '';
   CATEGORIES.forEach((c) => {
@@ -432,23 +438,22 @@ function quitGame() {
 }
 
 function init() {
-  renderModes();
-  el('mode-list').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-mode]');
-    if (!btn) return;
-    selectedMode = btn.dataset.mode;
-    renderStart();
-    showScreen('start');
-  });
-  el('btn-back').addEventListener('click', goHome);
+  renderStart();
   el('category-list').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-category]');
     if (!btn) return;
-    const categoryId = btn.dataset.category;
+    selectedCategory = btn.dataset.category;
+    renderModes();
+    showScreen('mode');
+  });
+  el('btn-back').addEventListener('click', goHome);
+  el('mode-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn || !selectedCategory) return;
     startGame({
-      mode: selectedMode,
-      categoryId,
-      questionList: QuizCore.questionsByCategory(QUESTIONS, categoryId),
+      mode: btn.dataset.mode,
+      categoryId: selectedCategory,
+      questionList: QuizCore.questionsByCategory(QUESTIONS, selectedCategory),
       isRetry: false,
     });
   });

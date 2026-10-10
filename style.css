@@ -103,6 +103,15 @@ button:disabled {
   color: #4b5563;
 }
 
+#feedback-verdict {
+  font-weight: 700;
+}
+
+#feedback-source a {
+  color: #1d4ed8;
+  overflow-wrap: anywhere;
+}
+
 .choice.is-correct {
   border-color: #15803d;
   background: #f0fdf4;

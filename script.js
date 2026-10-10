@@ -190,7 +190,139 @@ function renderStart() {
   });
 }
 
+// ---- 문제 화면 ----
+
+function startGame({ mode, categoryId, questionList, isRetry }) {
+  game = {
+    mode,
+    categoryId,
+    isRetry,
+    items: QuizCore.prepareItems(questionList, Math.random),
+    index: 0,
+    phase: 'answering',
+    usedHint: false,
+    startMs: 0,
+    results: [],
+  };
+  showScreen('question');
+  renderQuestion();
+}
+
+function currentScoreText() {
+  const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
+  return QuizCore.formatScore(total);
+}
+
+function renderQuestion() {
+  const item = game.items[game.index];
+  const category = CATEGORIES.find((c) => c.id === game.categoryId);
+
+  el('q-category').textContent = category ? category.name : '';
+  el('q-progress').textContent = `${game.index + 1} / ${game.items.length}`;
+  el('q-score').textContent = currentScoreText();
+  el('q-text').textContent = item.question;
+
+  const list = el('choice-list');
+  list.textContent = '';
+  item.choices.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'choice';
+    btn.dataset.index = String(i);
+    btn.textContent = text;
+    list.appendChild(btn);
+  });
+
+  el('feedback').hidden = true;
+  el('btn-next').hidden = true;
+  el('q-text').focus();
+}
+
+function finishQuestion({ chosenIndex, timedOut }) {
+  if (game.phase !== 'answering') return;
+  const item = game.items[game.index];
+  const correct = !timedOut && chosenIndex === item.answerIndex;
+  const halfPoints = QuizCore.scoreAnswer({ correct, usedHint: game.usedHint });
+
+  game.results.push({
+    questionId: item.id,
+    chosenIndex: timedOut ? null : chosenIndex,
+    correct,
+    usedHint: game.usedHint,
+    timedOut: !!timedOut,
+    halfPoints,
+  });
+  game.phase = 'feedback';
+
+  el('choice-list').querySelectorAll('.choice').forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    btn.disabled = true;
+    if (i === item.answerIndex) {
+      btn.classList.add('is-correct');
+      btn.textContent = '✓ ' + item.choices[i];
+    } else if (i === chosenIndex && !timedOut) {
+      btn.classList.add('is-wrong');
+      btn.textContent = '✗ ' + item.choices[i];
+    }
+  });
+
+  el('q-score').textContent = currentScoreText();
+  el('feedback-verdict').textContent = timedOut ? '시간 초과' : correct ? '정답입니다' : '오답입니다';
+  el('feedback-explanation').textContent = item.explanation;
+
+  const src = el('feedback-source');
+  src.textContent = '';
+  const link = document.createElement('a');
+  link.href = item.source.url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.textContent = item.source.title;
+  src.appendChild(link);
+
+  el('feedback').hidden = false;
+  const isLast = game.index === game.items.length - 1;
+  el('btn-next').textContent = isLast ? '결과 보기' : '다음';
+  el('btn-next').hidden = false;
+}
+
+function nextQuestion() {
+  if (game.phase !== 'feedback') return;
+  if (game.index === game.items.length - 1) {
+    showResult();
+    return;
+  }
+  game.index++;
+  game.usedHint = false;
+  game.phase = 'answering';
+  renderQuestion();
+}
+
+function quitGame() {
+  game = null;
+  goHome();
+}
+
 function init() {
+  el('category-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-category]');
+    if (!btn) return;
+    const categoryId = btn.dataset.category;
+    startGame({
+      mode: selectedMode,
+      categoryId,
+      questionList: QuizCore.questionsByCategory(QUESTIONS, categoryId),
+      isRetry: false,
+    });
+  });
+  el('choice-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('.choice');
+    if (!btn || !game || game.phase !== 'answering') return;
+    finishQuestion({ chosenIndex: Number(btn.dataset.index), timedOut: false });
+  });
+  el('btn-next').addEventListener('click', () => {
+    if (game) nextQuestion();
+  });
+  el('btn-quit').addEventListener('click', quitGame);
   goHome();
 }
 

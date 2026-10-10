@@ -55,6 +55,60 @@ test('formatScore', () => {
   assertEqual([14, 15, 0, 1].map(QuizCore.formatScore), ['7', '7.5', '0', '0.5']);
 });
 
+// ===== 문항 데이터 검사 =====
+function makeValidSet() {
+  return CATEGORIES.flatMap(c => Array.from({ length: 10 }, (_, i) =>
+    makeQuestion(`${c.prefix}-${String(i + 1).padStart(2, '0')}`, c.id)));
+}
+test('validateQuestions: 올바른 40문항은 오류 없음', () => {
+  assertEqual(QuizCore.validateQuestions(makeValidSet(), CATEGORIES), []);
+  const qs = makeValidSet();
+  qs[0].question = '길이 기준으로 세계에서 가장 긴 강은?';
+  qs[1].explanation = '가'.repeat(80);
+  assertEqual(QuizCore.validateQuestions(qs, CATEGORIES), []);
+});
+test('validateQuestions: 카테고리가 4개가 아니면 오류', () => {
+  assert(QuizCore.validateQuestions(makeValidSet(), CATEGORIES.slice(0, 3)).length > 0);
+});
+const BROKEN = [
+  ['카테고리 문항 9개', qs => qs.splice(0, 1)],
+  ['카테고리 문항 11개', qs => qs.push(makeQuestion('kh-11', 'korean-history'))],
+  ['id 중복', qs => { qs[1].id = qs[0].id; }],
+  ['접두어 불일치', qs => { qs[0].id = 'wg-99'; }],
+  ['없는 카테고리', qs => { qs[0].category = 'music'; }],
+  ['보기 3개', qs => { qs[0].choices = qs[0].choices.slice(0, 3); }],
+  ['빈 보기', qs => { qs[0].choices[1] = ' '; }],
+  ['겹치는 보기', qs => { qs[0].choices[1] = qs[0].choices[0]; }],
+  ['answer 4', qs => { qs[0].answer = 4; }],
+  ['answer 1.5', qs => { qs[0].answer = 1.5; }],
+  ['빈 해설', qs => { qs[0].explanation = ''; }],
+  ['81자 해설', qs => { qs[0].explanation = '가'.repeat(81); }],
+  ['출처 제목 없음', qs => { delete qs[0].source.title; }],
+  ['http 주소', qs => { qs[0].source = { ...qs[0].source, url: 'http://example.org' }; }],
+  ['checkedAt 형식', qs => { qs[0].source = { ...qs[0].source, checkedAt: '2026/10/08' }; }],
+  ['최상급인데 기준 없음', qs => { qs[0].question = '세계에서 가장 긴 강은?'; }],
+  ['보기가 배열이 아님', qs => { qs[0].choices = 'abcd'; }],
+  ['source 없음', qs => { delete qs[0].source; }],
+  ['문항이 null', qs => { qs[0] = null; }],
+];
+for (const [label, mutate] of BROKEN) {
+  test(`validateQuestions: ${label} → 오류`, () => {
+    const qs = makeValidSet(); mutate(qs);
+    assert(QuizCore.validateQuestions(qs, CATEGORIES).length > 0, label);
+  });
+}
+test('validateQuestions: 메시지 형식과 입력 불변', () => {
+  const qs = makeValidSet();
+  qs[0].explanation = '가'.repeat(81);
+  qs.splice(10, 1);
+  const before = JSON.stringify(qs);
+  const errors = QuizCore.validateQuestions(qs, CATEGORIES);
+  assert(errors.some(m => m.startsWith('kh-01: ')), errors.join(' | '));
+  assert(errors.includes('world-geography: 문항 9개'), errors.join(' | '));
+  assert(QuizCore.validateQuestions(makeValidSet(), CATEGORIES.slice(0, 3)).some(m => m.startsWith('전체: ')));
+  assertEqual(JSON.stringify(qs), before);
+});
+
 // ===== 결과 표시 =====
 window.addEventListener('load', () => {
   const passed = results.filter(r => r.ok).length;

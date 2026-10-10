@@ -37,7 +37,7 @@ const QUESTIONS = [
   {
     id: 'kh-04',
     category: 'korean-history',
-    question: '698년 고구려 옛 장수로서 발해(초기 국호 진국)를 세운 인물은?',
+    question: '고구려 장수 출신으로 698년 발해(초기 국호 진국)를 세운 인물은?',
     choices: ['궁예', '연개소문', '견훤', '대조영'],
     answer: 3,
     explanation: '고구려 옛 장수 대조영이 698년 발해를 세웠고, 처음 국호는 진국이었다.',
@@ -46,7 +46,7 @@ const QUESTIONS = [
   {
     id: 'kh-05',
     category: 'korean-history',
-    question: '993년 서희가 장수 소손녕과 담판을 벌여 물리친 침입군은 어느 나라 군대인가?',
+    question: '993년 서희가 적장 소손녕과 담판을 벌여 물리친 침입군은 어느 나라 군대인가?',
     choices: ['거란', '송', '여진', '몽골'],
     answer: 0,
     explanation: '서희는 993년 침입한 거란 장수 소손녕과 담판해 물리치고 강동 6주의 기초를 닦았다.',
@@ -55,7 +55,7 @@ const QUESTIONS = [
   {
     id: 'kh-06',
     category: 'korean-history',
-    question: '현재 남아 있는 것 기준으로 세계에서 가장 오래된 금속활자 인쇄본은?',
+    question: '인쇄 연도 기준으로, 지금 남아 있는 금속활자 인쇄본 가운데 가장 오래된 것은? (2026년 기준)',
     choices: ['무구정광대다라니경', '직지심체요절', '팔만대장경', '훈민정음 해례본'],
     answer: 1,
     explanation: '『직지』는 1377년 청주 흥덕사에서 찍은, 현존하는 가장 오래된 금속활자 인쇄물이다.',
@@ -64,7 +64,7 @@ const QUESTIONS = [
   {
     id: 'kh-07',
     category: 'korean-history',
-    question: '세조 때 편찬을 시작해 성종 때 완성되어 시행된 조선의 기본 법전은?',
+    question: '세조 때 편찬이 시작되어 성종 때 완성·시행된 조선의 기본 법전은?',
     choices: ['속대전', '대전통편', '경국대전', '조선경국전'],
     answer: 2,
     explanation: '『경국대전』은 세조가 편찬에 착수했고, 성종 때 다시 고쳐 시행한 조선의 기본 법전이다.',
@@ -73,7 +73,7 @@ const QUESTIONS = [
   {
     id: 'kh-08',
     category: 'korean-history',
-    question: '사도세자의 무덤을 화산으로 옮겼고, 그 재위 중에 수원 화성이 축조된 조선의 왕은?',
+    question: '사도세자의 무덤을 화산으로 옮기고, 재위 중에 수원 화성을 쌓은 조선의 왕은?',
     choices: ['영조', '숙종', '순조', '정조'],
     answer: 3,
     explanation: '정조는 사도세자 무덤을 화산으로 옮겼고, 정조 때 화성 공사가 시작되어 1796년 완성됐다.',
@@ -91,7 +91,7 @@ const QUESTIONS = [
   {
     id: 'kh-10',
     category: 'korean-history',
-    question: '1960년 3·15 부정 선거에 맞서 학생들이 중심이 되어 일으켜 이승만을 물러나게 한 사건은?',
+    question: '1960년 3·15 부정 선거에 맞서 학생들이 중심이 되어 일어나, 이승만 대통령을 물러나게 한 사건은?',
     choices: ['6월 민주 항쟁', '4·19 혁명', '부마 민주 항쟁', '5·18 민주화 운동'],
     answer: 1,
     explanation: '4·19 혁명은 1960년 4월 학생 중심의 민주주의 혁명으로, 이승만은 4월 26일 사임을 발표했다.',
@@ -120,7 +120,7 @@ const QUESTIONS = [
   {
     id: 'wg-03',
     category: 'world-geography',
-    question: '좁은 지협을 가로질러 대서양과 태평양을 잇는 운하는?',
+    question: '중앙아메리카의 지협을 가로질러 대서양과 태평양을 잇는 운하는?',
     choices: ['파나마 운하', '수에즈 운하', '킬 운하', '코린트 운하'],
     answer: 0,
     explanation: '파나마 운하는 좁은 파나마 지협을 가로질러 대서양과 태평양을 잇는 갑문식 운하다.',
@@ -132,7 +132,7 @@ const QUESTIONS = [
     question: '면적 기준으로 세계에서 가장 넓은 나라는? (2026년 기준)',
     choices: ['캐나다', '러시아', '중국', '미국'],
     answer: 1,
-    explanation: '러시아는 면적이 단연 세계 1위인 나라로, 2위 캐나다의 거의 두 배에 이른다.',
+    explanation: '러시아는 면적 기준 세계 1위인 나라이고, 2위는 캐나다다.',
     source: { title: 'Encyclopaedia Britannica 「Russia」', url: 'https://www.britannica.com/place/Russia', checkedAt: '2026-10-10' },
   },
   {
@@ -147,10 +147,10 @@ const QUESTIONS = [
   {
     id: 'wg-06',
     category: 'world-geography',
-    question: '최대 수심 기준으로 세계에서 가장 깊은 호수는?',
+    question: '최대 수심 기준으로 세계에서 가장 깊은 호수는? (2026년 기준)',
     choices: ['탕가니카호', '빅토리아호', '슈피리어호', '바이칼호'],
     answer: 3,
-    explanation: '러시아 시베리아의 바이칼호는 최대 수심 약 1,620m로, 세계에서 가장 깊은 호수다.',
+    explanation: '러시아 시베리아의 바이칼호는 최대 수심 기준으로 세계에서 가장 깊은 호수다.',
     source: { title: 'Encyclopaedia Britannica 「Lake Baikal」', url: 'https://www.britannica.com/place/Lake-Baikal', checkedAt: '2026-10-10' },
   },
   {
@@ -174,16 +174,16 @@ const QUESTIONS = [
   {
     id: 'wg-09',
     category: 'world-geography',
-    question: '남아메리카 서해안 열대 태평양의 바닷물이 평소보다 유난히 따뜻해지는 현상은?',
+    question: '남아메리카 서해안의 바닷물 온도가 평소보다 유난히 높아지는 현상은?',
     choices: ['라니냐', '푄', '엘니뇨', '몬순'],
     answer: 2,
-    explanation: '엘니뇨는 남아메리카 서해안 열대 바다가 유난히 따뜻해지는 현상이고, 차가워지는 쪽은 라니냐다.',
+    explanation: '엘니뇨는 남아메리카 서해안의 바닷물 온도가 유난히 높아지는 현상이고, 반대로 낮아지는 쪽은 라니냐다.',
     source: { title: 'Encyclopaedia Britannica 「El Niño」', url: 'https://www.britannica.com/science/El-Nino', checkedAt: '2026-10-10' },
   },
   {
     id: 'wg-10',
     category: 'world-geography',
-    question: '대부분 경도 180°선을 따라 그어져 하루와 다음 날의 날짜를 나누는 가상의 선은?',
+    question: '경도 180°선 부근에 그어져, 이 선을 넘으면 날짜가 하루 바뀌는 가상의 선은?',
     choices: ['본초 자오선', '적도', '북회귀선', '국제 날짜 변경선'],
     answer: 3,
     explanation: '국제 날짜 변경선은 날짜를 나누는 가상의 선으로, 대부분 경도 180°선을 따라간다.',
@@ -201,7 +201,7 @@ const QUESTIONS = [
   {
     id: 'sc-02',
     category: 'science',
-    question: '힘이 작용하지 않으면 정지한 물체는 계속 정지하고 움직이는 물체는 등속 직선 운동을 한다는 뉴턴 운동 제1법칙의 다른 이름은?',
+    question: '물체에 작용하는 알짜힘이 0이면 정지한 물체는 계속 정지하고 움직이는 물체는 등속 직선 운동을 한다는 뉴턴 운동 제1법칙의 다른 이름은?',
     choices: ['관성의 법칙', '가속도의 법칙', '작용 반작용의 법칙', '만유인력의 법칙'],
     answer: 0,
     explanation: '뉴턴 제1법칙은 관성의 법칙이다. 제2법칙은 F=ma, 제3법칙은 작용 반작용의 법칙이다.',
@@ -213,13 +213,13 @@ const QUESTIONS = [
     question: '드라이아이스는 어떤 물질이 고체 상태로 된 것인가?',
     choices: ['질소', '일산화 탄소', '메테인', '이산화 탄소'],
     answer: 3,
-    explanation: '드라이아이스는 고체 이산화 탄소로, 녹지 않고 바로 기체로 승화한다(-78.5°C).',
+    explanation: '드라이아이스는 고체 이산화 탄소로, 상온·상압에서 액체를 거치지 않고 바로 기체로 승화한다.',
     source: { title: 'Encyclopaedia Britannica 「Dry ice」', url: 'https://www.britannica.com/technology/dry-ice', checkedAt: '2026-10-10' },
   },
   {
     id: 'sc-04',
     category: 'science',
-    question: '건조한 공기에서 부피 기준으로 가장 큰 비율을 차지하는 기체는?',
+    question: '건조한 공기에서 부피 기준으로 가장 큰 비율을 차지하는 기체는? (2026년 기준)',
     choices: ['산소', '질소', '아르곤', '이산화 탄소'],
     answer: 1,
     explanation: '건조 공기는 부피로 질소 약 78%, 산소 약 21%이고, 아르곤과 이산화 탄소는 1% 미만이다.',
@@ -237,7 +237,7 @@ const QUESTIONS = [
   {
     id: 'sc-06',
     category: 'science',
-    question: 'DNA에는 없고 RNA에만 들어 있는 염기는?',
+    question: 'RNA에서 DNA의 타이민(T) 자리에 대신 들어가는 염기는?',
     choices: ['아데닌', '구아닌', '사이토신', '유라실'],
     answer: 3,
     explanation: 'RNA의 유라실(U) 자리에 DNA는 타이민(T)을 쓴다. 아데닌·구아닌·사이토신은 둘 다에 있다.',
@@ -327,7 +327,7 @@ const QUESTIONS = [
   {
     id: 'ac-06',
     category: 'arts-culture',
-    question: '밀라노 산타 마리아 델레 그라치에 수도원 식당 벽에 「최후의 만찬」을 그린 화가는?',
+    question: '밀라노의 한 수도원 식당 벽에 「최후의 만찬」을 그린 화가는?',
     choices: ['미켈란젤로', '라파엘로', '레오나르도 다빈치', '티치아노'],
     answer: 2,
     explanation: '산타 마리아 델레 그라치에 수도원 식당 북쪽 벽의 「최후의 만찬」은 레오나르도 다빈치가 그렸다.',
@@ -363,7 +363,7 @@ const QUESTIONS = [
   {
     id: 'ac-10',
     category: 'arts-culture',
-    question: '무굴 제국 황제 샤자한이 세상을 떠난 아내 뭄타즈 마할을 기리려고 세운 무덤 건축은?',
+    question: '무굴 제국 황제 샤자한이 세상을 떠난 아내 뭄타즈 마할을 기리려고 세운 무덤은?',
     choices: ['후마윤 묘', '쿠트브 미나르', '타지마할', '아잔타 석굴'],
     answer: 2,
     explanation: '타지마할은 무굴 황제 샤자한이 아내 뭄타즈 마할을 기려 아그라의 야무나강 가에 세운 무덤이다.',

@@ -238,9 +238,9 @@ const QUESTIONS = [
     id: 'sc-06',
     category: 'science',
     question: 'DNA에는 없고 RNA에만 들어 있는 염기는?',
-    choices: ['아데닌', '구아닌', '사이토신', '우라실'],
+    choices: ['아데닌', '구아닌', '사이토신', '유라실'],
     answer: 3,
-    explanation: 'RNA의 우라실(U) 자리에 DNA는 티민(T)을 쓴다. 아데닌·구아닌·사이토신은 둘 다에 있다.',
+    explanation: 'RNA의 유라실(U) 자리에 DNA는 타이민(T)을 쓴다. 아데닌·구아닌·사이토신은 둘 다에 있다.',
     source: { title: 'NHGRI Talking Glossary 「Uracil」', url: 'https://www.genome.gov/genetics-glossary/Uracil', checkedAt: '2026-10-10' },
   },
   {

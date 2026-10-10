@@ -29,7 +29,7 @@
 | sc-03 | 드라이아이스는 어떤 물질이 고체 상태로 된 것인가? | 이산화 탄소 | 질소, 일산화 탄소, 메테인 | Encyclopaedia Britannica 「Dry ice」 | https://www.britannica.com/technology/dry-ice | 고체 상태의 CO2, -78.5°C에서 승화 |
 | sc-04 | 건조한 공기에서 부피 기준으로 가장 큰 비율을 차지하는 기체는? | 질소 | 산소, 아르곤, 이산화 탄소 | NASA NSSDCA 「Earth Fact Sheet」 | https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html | 부피로 N2 78.08%, O2 20.95%, Ar·CO2는 ppm 단위 |
 | sc-05 | 세포에 필요한 화학 에너지 대부분을 만들어 ATP 형태로 저장하는 세포 소기관은? | 미토콘드리아 | 리보솜, 골지체, 리소좀 | NHGRI Talking Glossary 「Mitochondria」 | https://www.genome.gov/genetics-glossary/Mitochondria | 세포 화학 에너지 대부분을 만들어 ATP에 저장 |
-| sc-06 | DNA에는 없고 RNA에만 들어 있는 염기는? | 우라실 | 아데닌, 구아닌, 사이토신 | NHGRI Talking Glossary 「Uracil」 | https://www.genome.gov/genetics-glossary/Uracil | U는 RNA 염기, DNA에서는 T가 대신함 |
+| sc-06 | DNA에는 없고 RNA에만 들어 있는 염기는? | 유라실 | 아데닌, 구아닌, 사이토신 | NHGRI Talking Glossary 「Uracil」 | https://www.genome.gov/genetics-glossary/Uracil | U는 RNA 염기, DNA에서는 T가 대신함 |
 | sc-07 | 1928년 페니실린을 발견해 항생제 시대를 연 스코틀랜드의 세균학자는? | 알렉산더 플레밍 | 루이 파스퇴르, 로베르트 코흐, 에드워드 제너 | Encyclopaedia Britannica 「Alexander Fleming」 | https://www.britannica.com/biography/Alexander-Fleming | 스코틀랜드 세균학자, 1928년 페니실린 발견 |
 | sc-08 | 지표면에서 시작하며 거의 모든 기상 현상이 일어나는 대기층은? | 대류권 | 성층권, 중간권, 열권 | NOAA 「Layers of the Atmosphere」 | https://www.noaa.gov/jetstream/atmosphere/layers-of-atmosphere | 지표에서 시작, 거의 모든 날씨가 일어남 |
 | sc-09 | 다음 중 화산 활동으로 생긴 화성암에 속하는 암석은? | 현무암 | 석회암, 사암, 대리암 | Encyclopaedia Britannica 「Basalt」 | https://www.britannica.com/science/basalt | 현무암은 분출 화성암(화산암) |

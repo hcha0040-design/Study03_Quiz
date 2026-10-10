@@ -53,6 +53,13 @@ const QuizCore = {
     return results.filter(r => !r.correct).map(r => r.questionId);
   },
 
+  // 결과 목록에 붙이는 문항별 판정.
+  resultLabel({ correct, usedHint, timedOut }) {
+    if (timedOut) return '시간 초과';
+    if (!correct) return '오답';
+    return usedHint ? '정답 (힌트 0.5점)' : '정답';
+  },
+
   // 남은 시간(초)은 반복 횟수가 아니라 시작 시각과의 차이로 계산한다. 0~15로 자른다.
   remainingSeconds(startMs, nowMs) {
     const sec = Math.ceil((QuizCore.SPEED_LIMIT_MS - (nowMs - startMs)) / 1000);
@@ -241,12 +248,14 @@ function renderStart() {
 
 // ---- 문제 화면 ----
 
-function startGame({ mode, categoryId, questionList, isRetry }) {
+// keptScore: 다시 풀기 판에서 그대로 보여 줄 처음 판의 점수 { halfPoints, count }. 일반 판은 null.
+function startGame({ mode, categoryId, questionList, isRetry, keptScore = null }) {
   stopTimer();
   game = {
     mode,
     categoryId,
     isRetry,
+    keptScore,
     items: QuizCore.prepareItems(questionList, Math.random),
     index: 0,
     phase: 'answering',
@@ -258,9 +267,13 @@ function startGame({ mode, categoryId, questionList, isRetry }) {
   renderQuestion();
 }
 
+function totalHalfPoints() {
+  return game.results.reduce((sum, r) => sum + r.halfPoints, 0);
+}
+
+// 다시 풀기 판은 점수를 매기지 않고 처음 판의 점수를 그대로 보여 준다.
 function currentScoreText() {
-  const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
-  return QuizCore.formatScore(total);
+  return QuizCore.formatScore(game.keptScore ? game.keptScore.halfPoints : totalHalfPoints());
 }
 
 function renderQuestion() {
@@ -285,6 +298,7 @@ function renderQuestion() {
 
   el('btn-hint').hidden = game.mode !== 'hint';
   el('btn-hint').disabled = false;
+  el('btn-hint').textContent = '힌트 (오답 2개 지우기)';
   el('feedback').hidden = true;
   el('btn-next').hidden = true;
   el('q-text').focus();
@@ -345,6 +359,7 @@ function useHint() {
   });
   game.usedHint = true;
   el('btn-hint').disabled = true;
+  el('btn-hint').textContent = '힌트 사용함';
   // 잠긴 [힌트]에 초점이 남지 않게 남은 첫 보기로 옮긴다.
   const first = [...choices].find((b) => !b.disabled);
   if (first) first.focus();
@@ -416,11 +431,16 @@ function nextQuestion() {
 function showResult() {
   stopTimer();
   game.phase = 'done';
-  const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
   const correctCount = game.results.filter((r) => r.correct).length;
 
-  el('result-score').textContent = `${QuizCore.formatScore(total)} / ${game.items.length}`;
-  el('result-correct').textContent = `맞힌 문항: ${correctCount}개`;
+  if (game.keptScore) {
+    el('result-score').textContent = `${QuizCore.formatScore(game.keptScore.halfPoints)} / ${game.keptScore.count}`;
+    el('result-correct').textContent = `다시 풀기에서 맞힌 문항: ${correctCount} / ${game.items.length}개`;
+  } else {
+    el('result-score').textContent = `${QuizCore.formatScore(totalHalfPoints())} / ${game.items.length}`;
+    el('result-correct').textContent = `맞힌 문항: ${correctCount}개`;
+  }
+  renderResultList();
   const hintCount = game.results.filter((r) => r.usedHint).length;
   el('result-hints').textContent = `힌트를 쓴 문항: ${hintCount}개`;
   el('result-hints').hidden = game.mode !== 'hint';
@@ -429,6 +449,19 @@ function showResult() {
   el('btn-retry').hidden = !(game.mode === 'practice' && QuizCore.wrongQuestionIds(game.results).length > 0);
 
   showScreen('result');
+}
+
+// 문항마다 "문제 — 판정" 한 줄. 문제 글은 textContent로 넣는다.
+function renderResultList() {
+  const list = el('result-list');
+  list.textContent = '';
+  game.results.forEach((r, i) => {
+    const li = document.createElement('li');
+    const label = QuizCore.resultLabel(r);
+    li.className = r.correct ? 'is-correct' : 'is-wrong';
+    li.textContent = `${game.items[i].question} — ${label}`;
+    list.appendChild(li);
+  });
 }
 
 function quitGame() {
@@ -480,11 +513,14 @@ function init() {
     if (!game || game.phase !== 'done' || game.mode !== 'practice') return;
     const ids = QuizCore.wrongQuestionIds(game.results);
     if (ids.length === 0) return;
+    // 다시 풀기를 거듭해도 처음 판의 점수를 넘겨준다.
+    const keptScore = game.keptScore || { halfPoints: totalHalfPoints(), count: game.items.length };
     startGame({
       mode: 'practice',
       categoryId: game.categoryId,
       questionList: QUESTIONS.filter((q) => ids.includes(q.id)),
       isRetry: true,
+      keptScore,
     });
   });
   // 다시 풀기 판에서 눌러도 10문항짜리 일반 판으로 시작한다.

@@ -136,6 +136,12 @@ test('remainingSeconds / isTimedOut 경계값', () => {
   assertEqual(QuizCore.isTimedOut(s, s + 14999), false);
   assertEqual(QuizCore.isTimedOut(s, s + 15000), true);
 });
+test('resultLabel: 시간 초과 / 힌트 정답 / 정답 / 오답', () => {
+  assertEqual(QuizCore.resultLabel({ correct: false, usedHint: false, timedOut: true }), '시간 초과');
+  assertEqual(QuizCore.resultLabel({ correct: true, usedHint: true, timedOut: false }), '정답 (힌트 0.5점)');
+  assertEqual(QuizCore.resultLabel({ correct: true, usedHint: false, timedOut: false }), '정답');
+  assertEqual(QuizCore.resultLabel({ correct: false, usedHint: true, timedOut: false }), '오답');
+});
 
 // ===== 결과 표시 =====
 window.addEventListener('load', () => {

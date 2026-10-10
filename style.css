@@ -142,6 +142,26 @@ button:disabled {
 
 .is-removed {
   opacity: .4;
+  text-decoration: line-through;
+}
+
+#result-list {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+#result-list li {
+  margin-bottom: 0.25rem;
+}
+
+#result-list li.is-correct {
+  color: #15803d;
+}
+
+#result-list li.is-wrong {
+  color: #b91c1c;
 }
 
 #btn-hint:disabled {

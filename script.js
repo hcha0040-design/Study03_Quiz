@@ -297,6 +297,21 @@ function nextQuestion() {
   renderQuestion();
 }
 
+// ---- 결과 화면 ----
+
+function showResult() {
+  game.phase = 'done';
+  const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
+  const correctCount = game.results.filter((r) => r.correct).length;
+
+  el('result-score').textContent = `${QuizCore.formatScore(total)} / ${game.items.length}`;
+  el('result-correct').textContent = `맞힌 문항: ${correctCount}개`;
+  el('result-hints').hidden = true; // 힌트 모드에서 채운다(2단계)
+  el('result-norecord').hidden = game.mode !== 'practice';
+
+  showScreen('result');
+}
+
 function quitGame() {
   game = null;
   goHome();
@@ -323,6 +338,16 @@ function init() {
     if (game) nextQuestion();
   });
   el('btn-quit').addEventListener('click', quitGame);
+  el('btn-again').addEventListener('click', () => {
+    if (!game) return;
+    startGame({
+      mode: game.mode,
+      categoryId: game.categoryId,
+      questionList: QuizCore.questionsByCategory(QUESTIONS, game.categoryId),
+      isRetry: false,
+    });
+  });
+  el('btn-home').addEventListener('click', goHome);
   goHome();
 }
 

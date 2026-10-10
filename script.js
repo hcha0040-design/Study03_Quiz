@@ -40,6 +40,29 @@ const QuizCore = {
     return String(halfPoints / 2);
   },
 
+  // 스피드 모드 한 문항의 제한 시간(ms).
+  SPEED_LIMIT_MS: 15000,
+
+  // 힌트로 지울 오답 2개의 위치(섞은 뒤 기준, 오름차순). 정답이 아닌 위치 3개를 섞어 앞의 2개를 고른다.
+  pickHintRemovals(item, rng) {
+    const wrong = [0, 1, 2, 3].filter(i => i !== item.answerIndex);
+    return QuizCore.shuffle(wrong, rng).slice(0, 2).sort((a, b) => a - b);
+  },
+
+  wrongQuestionIds(results) {
+    return results.filter(r => !r.correct).map(r => r.questionId);
+  },
+
+  // 남은 시간(초)은 반복 횟수가 아니라 시작 시각과의 차이로 계산한다. 0~15로 자른다.
+  remainingSeconds(startMs, nowMs) {
+    const sec = Math.ceil((QuizCore.SPEED_LIMIT_MS - (nowMs - startMs)) / 1000);
+    return Math.min(15, Math.max(0, sec));
+  },
+
+  isTimedOut(startMs, nowMs) {
+    return nowMs - startMs >= QuizCore.SPEED_LIMIT_MS;
+  },
+
   // 문항 데이터 검사(PRD 5.2, 7.1). 오류 메시지 배열을 돌려주고, 문제가 없으면 빈 배열이다.
   // 잘못된 모양의 항목이 있어도 던지지 않고 메시지로 알린다.
   validateQuestions(questions, categories) {

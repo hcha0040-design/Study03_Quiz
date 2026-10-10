@@ -114,6 +114,29 @@ test('문항 데이터: 40문항이 작성 규칙을 지킨다', () => {
   assert(errors.length === 0, errors.join(' / '));
 });
 
+// ===== 2단계: 힌트·다시 풀기·타이머 =====
+test('pickHintRemovals: 정답 제외, 서로 다른 2개', () => {
+  for (let answerIndex = 0; answerIndex < 4; answerIndex++) {
+    for (let seed = 1; seed <= 30; seed++) {
+      const r = QuizCore.pickHintRemovals({ answerIndex, choices: ['a', 'b', 'c', 'd'] }, makeRng(seed));
+      assert(r.length === 2 && r[0] !== r[1], JSON.stringify(r));
+      assert(!r.includes(answerIndex) && r.every(i => i >= 0 && i <= 3), JSON.stringify(r));
+    }
+  }
+});
+test('wrongQuestionIds: 틀린 문항만 순서대로', () => {
+  const rs = [{ questionId: 'a', correct: false }, { questionId: 'b', correct: true },
+              { questionId: 'c', correct: false, timedOut: true }];
+  assertEqual(QuizCore.wrongQuestionIds(rs), ['a', 'c']);
+  assertEqual(QuizCore.wrongQuestionIds([{ questionId: 'b', correct: true }]), []);
+});
+test('remainingSeconds / isTimedOut 경계값', () => {
+  const s = 1000;
+  assertEqual([0, 1, 1000, 14001, 15000, 20000].map(e => QuizCore.remainingSeconds(s, s + e)), [15, 15, 14, 1, 0, 0]);
+  assertEqual(QuizCore.isTimedOut(s, s + 14999), false);
+  assertEqual(QuizCore.isTimedOut(s, s + 15000), true);
+});
+
 // ===== 결과 표시 =====
 window.addEventListener('load', () => {
   const passed = results.filter(r => r.ok).length;

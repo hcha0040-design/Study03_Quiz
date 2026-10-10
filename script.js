@@ -176,6 +176,7 @@ const MODES = {
 
 let selectedMode = 'practice';
 let game = null;
+let timerId = null;
 
 function el(id) {
   return document.getElementById(id);
@@ -235,6 +236,7 @@ function renderStart() {
 // ---- 문제 화면 ----
 
 function startGame({ mode, categoryId, questionList, isRetry }) {
+  stopTimer();
   game = {
     mode,
     categoryId,
@@ -278,10 +280,52 @@ function renderQuestion() {
   el('feedback').hidden = true;
   el('btn-next').hidden = true;
   el('q-text').focus();
+
+  const timer = el('q-timer');
+  timer.hidden = game.mode !== 'speed';
+  timer.classList.remove('is-urgent');
+  if (game.mode === 'speed') startTimer();
+}
+
+// ---- 스피드 모드 타이머 ----
+// 타이머는 하나만 둔다. 새로 시작할 때는 언제나 기존 것을 먼저 정리한다.
+
+function startTimer() {
+  stopTimer();
+  game.startMs = Date.now();
+  renderTimer(game.startMs);
+  timerId = setInterval(tick, 200);
+}
+
+function stopTimer() {
+  if (timerId !== null) {
+    clearInterval(timerId);
+    timerId = null;
+  }
+}
+
+function renderTimer(nowMs) {
+  const sec = QuizCore.remainingSeconds(game.startMs, nowMs);
+  const timer = el('q-timer');
+  timer.textContent = `남은 시간 ${sec}초`;
+  timer.classList.toggle('is-urgent', sec <= 5);
+}
+
+function tick() {
+  if (!game || game.mode !== 'speed' || game.phase !== 'answering') {
+    stopTimer();
+    return;
+  }
+  const now = Date.now();
+  renderTimer(now);
+  if (QuizCore.isTimedOut(game.startMs, now)) {
+    finishQuestion({ chosenIndex: null, timedOut: true });
+  }
 }
 
 function finishQuestion({ chosenIndex, timedOut }) {
   if (game.phase !== 'answering') return;
+  stopTimer();
   const item = game.items[game.index];
   const correct = !timedOut && chosenIndex === item.answerIndex;
   const halfPoints = QuizCore.scoreAnswer({ correct, usedHint: game.usedHint });
@@ -342,6 +386,7 @@ function nextQuestion() {
 // ---- 결과 화면 ----
 
 function showResult() {
+  stopTimer();
   game.phase = 'done';
   const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
   const correctCount = game.results.filter((r) => r.correct).length;
@@ -355,6 +400,7 @@ function showResult() {
 }
 
 function quitGame() {
+  stopTimer();
   game = null;
   goHome();
 }
@@ -383,7 +429,16 @@ function init() {
   el('choice-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.choice');
     if (!btn || !game || game.phase !== 'answering') return;
+    // 15초가 지났는데 아직 tick이 돌지 않은 사이의 클릭은 시간 초과로 본다.
+    if (game.mode === 'speed' && QuizCore.isTimedOut(game.startMs, Date.now())) {
+      tick();
+      return;
+    }
     finishQuestion({ chosenIndex: Number(btn.dataset.index), timedOut: false });
+  });
+  // 다른 탭에서는 setInterval이 느려지므로, 돌아오자마자 한 번 확인한다.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && timerId !== null) tick();
   });
   el('btn-next').addEventListener('click', () => {
     if (game) nextQuestion();

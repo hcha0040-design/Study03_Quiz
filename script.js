@@ -419,6 +419,8 @@ function showResult() {
   el('result-hints').textContent = `힌트를 쓴 문항: ${hintCount}개`;
   el('result-hints').hidden = game.mode !== 'hint';
   el('result-norecord').hidden = game.mode !== 'practice';
+  // 다시 풀기는 연습 모드에서 틀린 문항이 있을 때만(스피드·힌트는 하지 않음).
+  el('btn-retry').hidden = !(game.mode === 'practice' && QuizCore.wrongQuestionIds(game.results).length > 0);
 
   showScreen('result');
 }
@@ -469,6 +471,18 @@ function init() {
   });
   el('btn-hint').addEventListener('click', useHint);
   el('btn-quit').addEventListener('click', quitGame);
+  el('btn-retry').addEventListener('click', () => {
+    if (!game || game.phase !== 'done' || game.mode !== 'practice') return;
+    const ids = QuizCore.wrongQuestionIds(game.results);
+    if (ids.length === 0) return;
+    startGame({
+      mode: 'practice',
+      categoryId: game.categoryId,
+      questionList: QUESTIONS.filter((q) => ids.includes(q.id)),
+      isRetry: true,
+    });
+  });
+  // 다시 풀기 판에서 눌러도 10문항짜리 일반 판으로 시작한다.
   el('btn-again').addEventListener('click', () => {
     if (!game) return;
     startGame({

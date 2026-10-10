@@ -40,6 +40,29 @@ const QuizCore = {
     return String(halfPoints / 2);
   },
 
+  // 스피드 모드 한 문항의 제한 시간(ms).
+  SPEED_LIMIT_MS: 15000,
+
+  // 힌트로 지울 오답 2개의 위치(섞은 뒤 기준, 오름차순). 정답이 아닌 위치 3개를 섞어 앞의 2개를 고른다.
+  pickHintRemovals(item, rng) {
+    const wrong = [0, 1, 2, 3].filter(i => i !== item.answerIndex);
+    return QuizCore.shuffle(wrong, rng).slice(0, 2).sort((a, b) => a - b);
+  },
+
+  wrongQuestionIds(results) {
+    return results.filter(r => !r.correct).map(r => r.questionId);
+  },
+
+  // 남은 시간(초)은 반복 횟수가 아니라 시작 시각과의 차이로 계산한다. 0~15로 자른다.
+  remainingSeconds(startMs, nowMs) {
+    const sec = Math.ceil((QuizCore.SPEED_LIMIT_MS - (nowMs - startMs)) / 1000);
+    return Math.min(15, Math.max(0, sec));
+  },
+
+  isTimedOut(startMs, nowMs) {
+    return nowMs - startMs >= QuizCore.SPEED_LIMIT_MS;
+  },
+
   // 문항 데이터 검사(PRD 5.2, 7.1). 오류 메시지 배열을 돌려주고, 문제가 없으면 빈 배열이다.
   // 잘못된 모양의 항목이 있어도 던지지 않고 메시지로 알린다.
   validateQuestions(questions, categories) {
@@ -153,6 +176,7 @@ const MODES = {
 
 let selectedMode = 'practice';
 let game = null;
+let timerId = null;
 
 function el(id) {
   return document.getElementById(id);
@@ -169,13 +193,32 @@ function showScreen(name) {
   if (title) title.focus();
 }
 
+// 처음 화면은 모드 선택 화면이다.
 function goHome() {
   game = null;
-  renderStart();
-  showScreen('start');
+  showScreen('mode');
+}
+
+function renderModes() {
+  const list = el('mode-list');
+  list.textContent = '';
+  Object.keys(MODES).forEach((mode) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.mode = mode;
+    const name = document.createElement('strong');
+    name.className = 'mode-name';
+    name.textContent = MODES[mode].name;
+    const rule = document.createElement('span');
+    rule.className = 'mode-rule';
+    rule.textContent = MODES[mode].rule;
+    btn.append(name, rule);
+    list.appendChild(btn);
+  });
 }
 
 function renderStart() {
+  el('start-title').textContent = `${MODES[selectedMode].name} 모드`;
   el('start-rule').textContent = MODES[selectedMode].rule;
   el('start-norecord').hidden = selectedMode !== 'practice';
 
@@ -193,6 +236,7 @@ function renderStart() {
 // ---- 문제 화면 ----
 
 function startGame({ mode, categoryId, questionList, isRetry }) {
+  stopTimer();
   game = {
     mode,
     categoryId,
@@ -233,13 +277,77 @@ function renderQuestion() {
     list.appendChild(btn);
   });
 
+  el('btn-hint').hidden = game.mode !== 'hint';
+  el('btn-hint').disabled = false;
   el('feedback').hidden = true;
   el('btn-next').hidden = true;
   el('q-text').focus();
+
+  const timer = el('q-timer');
+  timer.hidden = game.mode !== 'speed';
+  timer.classList.remove('is-urgent');
+  if (game.mode === 'speed') startTimer();
+}
+
+// ---- 스피드 모드 타이머 ----
+// 타이머는 하나만 둔다. 새로 시작할 때는 언제나 기존 것을 먼저 정리한다.
+
+function startTimer() {
+  stopTimer();
+  game.startMs = Date.now();
+  renderTimer(game.startMs);
+  timerId = setInterval(tick, 200);
+}
+
+function stopTimer() {
+  if (timerId !== null) {
+    clearInterval(timerId);
+    timerId = null;
+  }
+}
+
+function renderTimer(nowMs) {
+  const sec = QuizCore.remainingSeconds(game.startMs, nowMs);
+  const timer = el('q-timer');
+  timer.textContent = `남은 시간 ${sec}초`;
+  timer.classList.toggle('is-urgent', sec <= 5);
+}
+
+function tick() {
+  if (!game || game.mode !== 'speed' || game.phase !== 'answering') {
+    stopTimer();
+    return;
+  }
+  const now = Date.now();
+  renderTimer(now);
+  if (QuizCore.isTimedOut(game.startMs, now)) {
+    finishQuestion({ chosenIndex: null, timedOut: true });
+  }
+}
+
+// ---- 힌트 모드 ----
+
+// 오답 2개를 잠그고 흐리게 한다. 버튼 자리는 그대로 둔다.
+function useHint() {
+  if (!game || game.mode !== 'hint' || game.phase !== 'answering' || game.usedHint) return;
+  const item = game.items[game.index];
+  const removals = QuizCore.pickHintRemovals(item, Math.random);
+  const choices = el('choice-list').querySelectorAll('.choice');
+  removals.forEach((i) => {
+    choices[i].disabled = true;
+    choices[i].classList.add('is-removed');
+  });
+  game.usedHint = true;
+  el('btn-hint').disabled = true;
+  // 잠긴 [힌트]에 초점이 남지 않게 남은 첫 보기로 옮긴다.
+  const first = [...choices].find((b) => !b.disabled);
+  if (first) first.focus();
 }
 
 function finishQuestion({ chosenIndex, timedOut }) {
   if (game.phase !== 'answering') return;
+  stopTimer();
+  el('btn-hint').disabled = true;
   const item = game.items[game.index];
   const correct = !timedOut && chosenIndex === item.answerIndex;
   const halfPoints = QuizCore.scoreAnswer({ correct, usedHint: game.usedHint });
@@ -300,24 +408,39 @@ function nextQuestion() {
 // ---- 결과 화면 ----
 
 function showResult() {
+  stopTimer();
   game.phase = 'done';
   const total = game.results.reduce((sum, r) => sum + r.halfPoints, 0);
   const correctCount = game.results.filter((r) => r.correct).length;
 
   el('result-score').textContent = `${QuizCore.formatScore(total)} / ${game.items.length}`;
   el('result-correct').textContent = `맞힌 문항: ${correctCount}개`;
-  el('result-hints').hidden = true; // 힌트 모드에서 채운다(2단계)
+  const hintCount = game.results.filter((r) => r.usedHint).length;
+  el('result-hints').textContent = `힌트를 쓴 문항: ${hintCount}개`;
+  el('result-hints').hidden = game.mode !== 'hint';
   el('result-norecord').hidden = game.mode !== 'practice';
+  // 다시 풀기는 연습 모드에서 틀린 문항이 있을 때만(스피드·힌트는 하지 않음).
+  el('btn-retry').hidden = !(game.mode === 'practice' && QuizCore.wrongQuestionIds(game.results).length > 0);
 
   showScreen('result');
 }
 
 function quitGame() {
+  stopTimer();
   game = null;
   goHome();
 }
 
 function init() {
+  renderModes();
+  el('mode-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    selectedMode = btn.dataset.mode;
+    renderStart();
+    showScreen('start');
+  });
+  el('btn-back').addEventListener('click', goHome);
   el('category-list').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-category]');
     if (!btn) return;
@@ -332,12 +455,34 @@ function init() {
   el('choice-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.choice');
     if (!btn || !game || game.phase !== 'answering') return;
+    // 15초가 지났는데 아직 tick이 돌지 않은 사이의 클릭은 시간 초과로 본다.
+    if (game.mode === 'speed' && QuizCore.isTimedOut(game.startMs, Date.now())) {
+      tick();
+      return;
+    }
     finishQuestion({ chosenIndex: Number(btn.dataset.index), timedOut: false });
+  });
+  // 다른 탭에서는 setInterval이 느려지므로, 돌아오자마자 한 번 확인한다.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && timerId !== null) tick();
   });
   el('btn-next').addEventListener('click', () => {
     if (game) nextQuestion();
   });
+  el('btn-hint').addEventListener('click', useHint);
   el('btn-quit').addEventListener('click', quitGame);
+  el('btn-retry').addEventListener('click', () => {
+    if (!game || game.phase !== 'done' || game.mode !== 'practice') return;
+    const ids = QuizCore.wrongQuestionIds(game.results);
+    if (ids.length === 0) return;
+    startGame({
+      mode: 'practice',
+      categoryId: game.categoryId,
+      questionList: QUESTIONS.filter((q) => ids.includes(q.id)),
+      isRetry: true,
+    });
+  });
+  // 다시 풀기 판에서 눌러도 10문항짜리 일반 판으로 시작한다.
   el('btn-again').addEventListener('click', () => {
     if (!game) return;
     startGame({

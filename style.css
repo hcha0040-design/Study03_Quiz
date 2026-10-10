@@ -59,6 +59,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
+#mode-list,
 #category-list,
 #choice-list {
   display: flex;
@@ -67,12 +68,23 @@ button:disabled {
   margin: 1rem 0;
 }
 
+#mode-list button,
 #category-list button,
 .choice {
   width: 100%;
   text-align: left;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+.mode-name,
+.mode-rule {
+  display: block;
+}
+
+.mode-rule {
+  font-size: 0.875rem;
+  color: #4b5563;
 }
 
 .status-bar {
@@ -124,6 +136,10 @@ button:disabled {
 
 .is-removed {
   opacity: .4;
+}
+
+#btn-hint:disabled {
+  opacity: .5;
 }
 
 .is-urgent {

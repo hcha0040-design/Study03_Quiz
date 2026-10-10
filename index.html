@@ -8,11 +8,17 @@
 </head>
 <body>
   <main id="app">
-    <section class="screen" id="screen-start">
-      <h1 id="start-title" tabindex="-1">상식 퀴즈</h1>
+    <section class="screen" id="screen-mode">
+      <h1 id="mode-title" tabindex="-1">상식 퀴즈</h1>
+      <div id="mode-list"></div>
+    </section>
+
+    <section class="screen" id="screen-start" hidden>
+      <h2 id="start-title" tabindex="-1"></h2>
       <p id="start-rule"></p>
       <p id="start-norecord" hidden>순위표에 기록되지 않음</p>
       <div id="category-list"></div>
+      <button type="button" id="btn-back">뒤로</button>
     </section>
 
     <section class="screen" id="screen-question" hidden>
@@ -20,10 +26,12 @@
         <span id="q-category"></span>
         <span id="q-progress"></span>
         <span id="q-score"></span>
+        <span id="q-timer" hidden></span>
         <button type="button" id="btn-quit">그만두기</button>
       </div>
       <h2 id="q-text" tabindex="-1"></h2>
       <div id="choice-list"></div>
+      <button type="button" id="btn-hint" hidden>힌트</button>
       <div id="feedback" aria-live="polite">
         <p id="feedback-verdict"></p>
         <p id="feedback-explanation"></p>
@@ -39,6 +47,7 @@
       <p id="result-hints" hidden></p>
       <p id="result-norecord" hidden>순위표에 기록되지 않음</p>
       <div class="actions">
+        <button type="button" id="btn-retry" hidden>틀린 문제 다시 풀기</button>
         <button type="button" id="btn-again">같은 카테고리 다시 하기</button>
         <button type="button" id="btn-home">처음으로</button>
       </div>
